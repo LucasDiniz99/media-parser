@@ -16,4 +16,4 @@ nb-configuration.xml
 *.ear
 
 # Project specific files
-files/
+files/*.*
