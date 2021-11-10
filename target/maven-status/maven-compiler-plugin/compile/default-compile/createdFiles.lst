@@ -1,3 +1,7 @@
-app\Config.class
-app\MangaListParser.class
-app\Media.class
+view\FileView$1.class
+bootstrap\Config.class
+view\FileView$2.class
+model\FileParser.class
+model\Media.class
+controller\Main.class
+view\FileView.class

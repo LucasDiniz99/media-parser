@@ -17,3 +17,4 @@ nb-configuration.xml
 
 # Project specific files
 files/*.*
+cigwin_path.txt
