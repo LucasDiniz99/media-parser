@@ -5,7 +5,6 @@
  */
 package controller;
 
-import model.FileParser;
 import view.FileView;
 
 /**
@@ -13,13 +12,7 @@ import view.FileView;
  * @author lucas
  */
 public class Main {
-
-    // Paths
-//    static String testInputPath = "L:\\Documents\\Projects\\NetBeansProjects\\media-parser\\files\\input.txt";
-//    static String testoutputPath = "L:\\Documents\\Projects\\NetBeansProjects\\media-parser\\files\\output.txt";
-
     public static void main(String[] args) {
-        FileParser fileParser = new FileParser();
         FileView view = new FileView();
     }
 }
