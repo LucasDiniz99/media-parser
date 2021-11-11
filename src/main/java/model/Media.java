@@ -27,7 +27,7 @@ public class Media {
     public ArrayList<String> altNames = new ArrayList();
     public int chapters = 0;
     public float score = 0.0f;
-    public String mediaParams = " ";
+    public String mediaParams = "";
 
     public Media(String title) {
         this.title = title;
@@ -47,7 +47,7 @@ public class Media {
             if (this.mediaParams.length() > 1) {
                 this.mediaParams += " ";
             }
-            this.mediaParams += String.format("%s=\"%s\"", StringEscapeUtils.escapeHtml(param.getKey()), StringEscapeUtils.escapeHtml(param.getValue()));
+            this.mediaParams += String.format(" %s=\"%s\"", StringEscapeUtils.escapeHtml(param.getKey()), StringEscapeUtils.escapeHtml(param.getValue()));
         }
     }
 

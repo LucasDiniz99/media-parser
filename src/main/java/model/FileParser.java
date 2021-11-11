@@ -36,11 +36,13 @@ public class FileParser {
     // Progress bar
     JProgressBar progressBar = null;
     // Current file size and reading progress
-    int fileSize = 1;
+    long currentProgress = 0;
+    long fileSize = 0;
 
     public FileParser(JProgressBar progressBar) {
         this.progressBar = progressBar;
     }
+
     public FileParser() {
     }
 
@@ -58,7 +60,7 @@ public class FileParser {
      * the value of the write variable
      * @throws java.io.IOException
      */
-    public static int checkFiles(String path, boolean write, boolean create) throws IOException {
+    public static long checkFiles(String path, boolean write, boolean create) throws IOException {
         File file = new File(path);
 
         if (write) {
@@ -69,25 +71,9 @@ public class FileParser {
                 // If don't exists create when passed as param
                 file.createNewFile();
             }
-        } else if (file.canRead()) {
+        } else if (file.exists() && file.canRead()) {
             // Count the ammount of lines if the file will be read
-            InputStream is = new BufferedInputStream(new FileInputStream(file));
-            byte[] c = new byte[1024];
-            int count = 0;
-            int readChars = 0;
-            boolean endsWithoutNewLine = false;
-            while ((readChars = is.read(c)) != -1) {
-                for (int i = 0; i < readChars; ++i) {
-                    if (c[i] == '\n') {
-                        ++count;
-                    }
-                }
-                endsWithoutNewLine = (c[readChars - 1] != '\n');
-            }
-            if (endsWithoutNewLine) {
-                ++count;
-            }
-            return count;
+            return file.length();
         }
         return 0;
     }
@@ -101,7 +87,7 @@ public class FileParser {
      * error occoured
      * @throws java.io.IOException
      */
-    public static int checkFiles(String path) throws IOException {
+    public static long checkFiles(String path) throws IOException {
         return FileParser.checkFiles(path, false, false);
     }
 
@@ -140,9 +126,10 @@ public class FileParser {
 
         // If has progress bar setup it
         if (this.progressBar != null) {
+            this.currentProgress = 0;
             this.progressBar.setMinimum(0);
             this.progressBar.setValue(0);
-            this.progressBar.setMaximum(this.fileSize);
+            this.progressBar.setMaximum(100);
         }
 
         try {
@@ -159,6 +146,9 @@ public class FileParser {
             writer.write("</medias>");
             writer.close();
             stream.close();
+            if (this.progressBar != null) {
+                this.progressBar.setValue(100);
+            }
         } catch (IOException ex) {
             Logger.getLogger(FileParser.class.getName()).log(Level.SEVERE, null, ex);
             return 1;
@@ -179,7 +169,8 @@ public class FileParser {
     public void parseLine(String line) {
         // If has progress bar, increase its value by one line
         if (this.progressBar != null) {
-            this.progressBar.setValue(this.progressBar.getValue() + 1);
+            this.currentProgress += line.length();
+            this.progressBar.setValue((int) (((float) this.currentProgress / this.fileSize) * 100));
         }
 
         switch (Media.checkLine(line)) {
